@@ -1,0 +1,6 @@
+{
+  "name": "Becca Foodies",
+  "description": "An interactive, content-focused food blog featuring authentic Kenyan recipes, healthy portion control guides, and wellness tips.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
