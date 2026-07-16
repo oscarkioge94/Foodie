@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { ArrowRight, Sparkles, Sprout, Heart } from "lucide-react";
+import { getImageUrl } from "../utils/image";
 
 interface HeroProps {
   onExploreRecipes: () => void;
@@ -106,7 +107,7 @@ export default function Hero({ onExploreRecipes, onExploreArticles }: HeroProps)
               {/* Representing the premium plate artwork crop */}
               <div className="w-[92%] h-[92%] border border-[#FDFBF7]/20 rounded-full overflow-hidden flex items-center justify-center">
                 <img
-                  src="/images/becca_foodies_hero_banner_1784115196901.jpg"
+                  src={getImageUrl("/images/becca_foodies_hero_banner_1784115196901.jpg")}
                   alt="Becca's delicious home-cooked meals"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover grayscale hover:grayscale-0 contrast-105 transition-all duration-700"

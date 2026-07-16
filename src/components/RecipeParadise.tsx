@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Search, Clock, Users, BookOpen, ChevronRight, X, Heart, Award, MessageSquare, Send, Check } from "lucide-react";
 import { MenuItem, Article } from "../types";
 import { MENU_ITEMS, ARTICLES } from "../data/foodData";
+import { getImageUrl } from "../utils/image";
 
 interface RecipeParadiseProps {
   onToggleSaveRecipe: (item: MenuItem) => void;
@@ -247,7 +248,7 @@ export default function RecipeParadise({
                     {/* Image */}
                     <div className="relative h-56 overflow-hidden border-b border-[#1A1A1A]">
                       <img
-                        src={item.image}
+                        src={getImageUrl(item.image)}
                         alt={item.name}
                         className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-transform duration-700 group-hover:scale-105"
                       />
@@ -357,7 +358,7 @@ export default function RecipeParadise({
                 {/* Image */}
                 <div className="relative h-48 overflow-hidden border-b border-[#1A1A1A]">
                   <img
-                    src={article.image}
+                    src={getImageUrl(article.image)}
                     alt={article.title}
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-transform duration-700 group-hover:scale-105"
                   />
@@ -418,7 +419,7 @@ export default function RecipeParadise({
               {/* Image banner */}
               <div className="relative h-64 md:h-80 shrink-0 border-b-2 border-[#1A1A1A]">
                 <img
-                  src={activeRecipe.image}
+                  src={getImageUrl(activeRecipe.image)}
                   alt={activeRecipe.name}
                   className="w-full h-full object-cover"
                 />
@@ -646,7 +647,7 @@ export default function RecipeParadise({
               {/* Image banner */}
               <div className="relative h-56 md:h-64 shrink-0 border-b-2 border-[#1A1A1A]">
                 <img
-                  src={activeArticle.image}
+                  src={getImageUrl(activeArticle.image)}
                   alt={activeArticle.title}
                   className="w-full h-full object-cover"
                 />

@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { X, Heart, Clock, Users, BookOpen, Trash2 } from "lucide-react";
 import { MenuItem } from "../types";
+import { getImageUrl } from "../utils/image";
 
 interface SavedRecipesDrawerProps {
   isOpen: boolean;
@@ -64,7 +65,7 @@ export default function SavedRecipesDrawer({
                   {/* Thumbnail */}
                   <div className="w-20 h-20 shrink-0 border border-[#1A1A1A] overflow-hidden bg-[#1A1A1A]/5">
                     <img
-                      src={item.image}
+                      src={getImageUrl(item.image)}
                       alt={item.name}
                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-350"
                     />
