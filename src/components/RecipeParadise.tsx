@@ -10,6 +10,8 @@ interface RecipeParadiseProps {
   savedRecipeIds: string[];
   viewRecipe?: MenuItem | null;
   onClearViewRecipe?: () => void;
+  recipes?: MenuItem[];
+  articles?: Article[];
 }
 
 interface Comment {
@@ -24,6 +26,8 @@ export default function RecipeParadise({
   savedRecipeIds,
   viewRecipe,
   onClearViewRecipe,
+  recipes = [],
+  articles = [],
 }: RecipeParadiseProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -55,10 +59,10 @@ export default function RecipeParadise({
     { id: "kenyan", label: "Kenyan Cuisines" },
   ];
 
-  // Filter MENU_ITEMS to only keep the real migrated recipes
+  // Use passed-in dynamic database recipes with static fallback
   const foodBlogRecipes = useMemo(() => {
-    return MENU_ITEMS.filter((item) => item.id.startsWith("migrated-recipe-"));
-  }, []);
+    return recipes.length > 0 ? recipes : MENU_ITEMS.filter((item) => item.id.startsWith("migrated-recipe-"));
+  }, [recipes]);
 
   // Filter recipes based on search query and category tags
   const filteredRecipes = useMemo(() => {
@@ -350,7 +354,7 @@ export default function RecipeParadise({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {ARTICLES.map((article) => (
+            {(articles.length > 0 ? articles : ARTICLES).map((article) => (
               <div
                 key={article.id}
                 className="bg-white-card border-2 border-primary-teal flex flex-col h-full overflow-hidden group hover:shadow-lg transition-all"
@@ -407,7 +411,7 @@ export default function RecipeParadise({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setActiveRecipe(null)}
-              className="absolute inset-0 bg-[#1A1A1A]/75 backdrop-blur-sm"
+              className="absolute inset-0 bg-dark-green/60 backdrop-blur-sm"
             />
             
             <motion.div
@@ -423,7 +427,7 @@ export default function RecipeParadise({
                   alt={activeRecipe.name}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-green/80 via-[#1A1A1A]/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark-green/80 via-primary-teal/25 to-transparent" />
                 
                 {/* Close Button */}
                 <button
@@ -616,7 +620,7 @@ export default function RecipeParadise({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setActiveArticle(null)}
-              className="absolute inset-0 bg-[#1A1A1A]/75 backdrop-blur-sm"
+              className="absolute inset-0 bg-dark-green/60 backdrop-blur-sm"
             />
             
             <motion.div

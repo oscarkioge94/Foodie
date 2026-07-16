@@ -2,7 +2,11 @@ import { useState, FormEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Send, Leaf, Heart, ArrowUpRight, CheckCircle } from "lucide-react";
 
-export default function Footer() {
+interface FooterProps {
+  onOpenAdmin?: () => void;
+}
+
+export default function Footer({ onOpenAdmin }: FooterProps) {
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -127,6 +131,15 @@ export default function Footer() {
               <span>Disclaimer</span>
               <ArrowUpRight className="w-3 h-3 ml-0.5" />
             </a>
+            {onOpenAdmin && (
+              <button 
+                onClick={(e) => { e.preventDefault(); onOpenAdmin(); }} 
+                className="hover:text-white-card text-gold-yellow transition-colors flex items-center cursor-pointer font-mono text-[10px]"
+              >
+                <span>Admin Console</span>
+                <ArrowUpRight className="w-3 h-3 ml-0.5" />
+              </button>
+            )}
           </div>
 
           <p className="font-mono text-[9px] tracking-[0.15em] text-center sm:text-right text-cream-bg/40">

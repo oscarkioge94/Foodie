@@ -6,12 +6,33 @@ import Philosophy from "./components/Philosophy";
 import RecipeParadise from "./components/RecipeParadise";
 import Footer from "./components/Footer";
 import SavedRecipesDrawer from "./components/SavedRecipesDrawer";
-import { MenuItem } from "./types";
+import AdminDashboard from "./components/AdminDashboard";
+import { MenuItem, Article } from "./types";
+import { subscribeToRecipes, subscribeToArticles } from "./utils/firebaseService";
 
 export default function App() {
+  const [recipes, setRecipes] = useState<MenuItem[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [savedRecipes, setSavedRecipes] = useState<MenuItem[]>([]);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [viewRecipe, setViewRecipe] = useState<MenuItem | null>(null);
+
+  // Sync real-time recipes and articles from backend database
+  useEffect(() => {
+    const unsubscribeRecipes = subscribeToRecipes((updatedRecipes) => {
+      setRecipes(updatedRecipes);
+    });
+
+    const unsubscribeArticles = subscribeToArticles((updatedArticles) => {
+      setArticles(updatedArticles);
+    });
+
+    return () => {
+      unsubscribeRecipes();
+      unsubscribeArticles();
+    };
+  }, []);
 
   // Load saved recipes from local storage on mount
   useEffect(() => {
@@ -61,6 +82,7 @@ export default function App() {
       <Navbar
         savedCount={savedRecipes.length}
         onOpenSaved={() => setIsSavedOpen(true)}
+        onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
       {/* Main Sections */}
@@ -80,11 +102,13 @@ export default function App() {
           savedRecipeIds={savedRecipeIds}
           viewRecipe={viewRecipe}
           onClearViewRecipe={() => setViewRecipe(null)}
+          recipes={recipes}
+          articles={articles}
         />
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Footer onOpenAdmin={() => setIsAdminOpen(true)} />
 
       {/* Bookmarks saved recipes drawer */}
       <AnimatePresence>
@@ -98,6 +122,18 @@ export default function App() {
               setViewRecipe(recipe);
               setIsSavedOpen(false);
             }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Admin Creator Dashboard Console */}
+      <AnimatePresence>
+        {isAdminOpen && (
+          <AdminDashboard
+            isOpen={isAdminOpen}
+            onClose={() => setIsAdminOpen(false)}
+            recipes={recipes}
+            articles={articles}
           />
         )}
       </AnimatePresence>

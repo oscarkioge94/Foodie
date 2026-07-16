@@ -26,7 +26,7 @@ export default function SavedRecipesDrawer({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="absolute inset-0 bg-[#1A1A1A]/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-dark-green/40 backdrop-blur-sm"
       />
 
       {/* Drawer Panel */}

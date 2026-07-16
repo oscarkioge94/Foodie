@@ -5,9 +5,10 @@ import { Heart, Menu, X, Leaf } from "lucide-react";
 interface NavbarProps {
   savedCount: number;
   onOpenSaved: () => void;
+  onOpenAdmin?: () => void;
 }
 
-export default function Navbar({ savedCount, onOpenSaved }: NavbarProps) {
+export default function Navbar({ savedCount, onOpenSaved, onOpenAdmin }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -54,6 +55,15 @@ export default function Navbar({ savedCount, onOpenSaved }: NavbarProps) {
                 <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-gold-yellow transition-all duration-300 group-hover:w-full" />
               </button>
             ))}
+            {onOpenAdmin && (
+              <button
+                onClick={onOpenAdmin}
+                className="font-sans text-[11px] font-semibold text-gold-yellow hover:text-white-card tracking-[0.2em] uppercase relative py-1 group cursor-pointer transition-colors"
+              >
+                Creator Panel
+                <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-white transition-all duration-300 group-hover:w-full" />
+              </button>
+            )}
           </nav>
 
           {/* Right Action Items */}
@@ -131,6 +141,14 @@ export default function Navbar({ savedCount, onOpenSaved }: NavbarProps) {
                     {link.name}
                   </button>
                 ))}
+                {onOpenAdmin && (
+                  <button
+                    onClick={() => { setIsMobileMenuOpen(false); onOpenAdmin(); }}
+                    className="text-left py-2 text-sm font-semibold text-gold-yellow hover:text-white-card uppercase tracking-widest border-b border-white-card/10 transition-colors cursor-pointer"
+                  >
+                    Creator Panel
+                  </button>
+                )}
               </nav>
 
               <div className="pt-2">
