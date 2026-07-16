@@ -6,6 +6,17 @@
   --font-display: "Space Grotesk", sans-serif;
   --font-serif: "Playfair Display", Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Custom requested color palette */
+  --color-primary-teal: #0F766E;
+  --color-dark-green: #14532D;
+  --color-bright-lime: #84CC16;
+  --color-gold-yellow: #EAB308;
+  --color-pink-red: #DB2777;
+  --color-cream-bg: #FDF6EC;
+  --color-light-mint: #ECFDF5;
+  --color-white-card: #FFFFFF;
+  --color-gray-body: #4B5563;
 }
 
 

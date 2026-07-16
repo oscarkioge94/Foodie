@@ -56,7 +56,7 @@ export default function App() {
   const savedRecipeIds = savedRecipes.map((r) => r.id);
 
   return (
-    <div className="bg-[#FDFBF7] min-h-screen text-[#1A1A1A] selection:bg-[#C4A484]/30 scroll-smooth">
+    <div className="bg-cream-bg min-h-screen text-gray-body selection:bg-primary-teal/20 scroll-smooth">
       {/* Navigation bar */}
       <Navbar
         savedCount={savedRecipes.length}
