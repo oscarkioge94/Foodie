@@ -102,7 +102,7 @@ export async function verifyCredentials(username: string, passport: string): Pro
         try {
           await setDoc(adminRef, { username: "admin", passphrase: "Admin123!@#" }, { merge: true });
         } catch (e) {
-          console.error("Auto-healing admin config failed but allowing login:", e);
+          console.warn("Auto-healing admin config failed but allowing login:", e);
         }
       }
       
@@ -111,7 +111,7 @@ export async function verifyCredentials(username: string, passport: string): Pro
     // Fallback if document not found
     return username === "admin" && passport === "Admin123!@#";
   } catch (error) {
-    console.error("Error verifying credentials:", error);
+    console.warn("Error verifying credentials:", error);
     // Bulletproof fallback so network/permission issues don't lock you out
     return username === "admin" && passport === "Admin123!@#";
   }
@@ -130,7 +130,7 @@ export async function getAdminCredentials(): Promise<{ username: string }> {
     }
     return { username: "admin" };
   } catch (error) {
-    console.error("Error getting admin credentials:", error);
+    console.warn("Error getting admin credentials:", error);
     return { username: "admin" };
   }
 }
@@ -144,7 +144,7 @@ export async function updateAdminCredentials(newUsername: string, newPassword: s
     await setDoc(adminRef, { username: newUsername, passphrase: newPassword }, { merge: true });
     return true;
   } catch (error) {
-    console.error("Error updating admin credentials:", error);
+    console.warn("Error updating admin credentials:", error);
     return false;
   }
 }
@@ -158,7 +158,7 @@ export async function updatePassphrase(newPassphrase: string): Promise<boolean> 
     await setDoc(adminRef, { passphrase: newPassphrase }, { merge: true });
     return true;
   } catch (error) {
-    console.error("Error updating passphrase:", error);
+    console.warn("Error updating passphrase:", error);
     return false;
   }
 }

@@ -3,6 +3,7 @@ import {
   initializeFirestore,
   persistentLocalCache,
   persistentMultipleTabManager,
+  setLogLevel,
   collection, 
   getDocs, 
   addDoc, 
@@ -26,6 +27,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// Silence internal Firestore warning logs (such as offline/unable to reach backend)
+setLogLevel("silent");
 
 // Initialize Firestore with robust local caching to handle network dropouts smoothly
 export const db = initializeFirestore(app, {

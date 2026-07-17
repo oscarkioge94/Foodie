@@ -395,55 +395,55 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
           </div>
         ) : (
           /* AUTHENTICATED: Creator Console */
-          <div className="flex-1 flex overflow-hidden">
+          <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
             
             {/* Sidebar Controls */}
-            <div className="w-56 border-r-2 border-primary-teal bg-primary-teal/5 flex flex-col justify-between shrink-0 font-mono">
-              <div className="p-4 space-y-2">
+            <div className="w-full md:w-56 border-b-2 md:border-b-0 md:border-r-2 border-primary-teal bg-primary-teal/5 flex flex-row md:flex-col justify-between items-center md:items-stretch shrink-0 font-mono">
+              <div className="p-2 md:p-4 grid grid-cols-3 md:grid-cols-1 gap-1.5 md:space-y-2 flex-1 md:w-full">
                 <button
                   onClick={() => { setActiveTab("recipes"); setShowRecipeForm(false); setShowArticleForm(false); }}
-                  className={`w-full px-4 py-3.5 border-2 text-left text-xs font-bold uppercase tracking-wider flex items-center space-x-2.5 transition-all cursor-pointer ${
+                  className={`w-full px-2 md:px-4 py-2.5 md:py-3.5 border-2 text-center md:text-left text-[9px] md:text-xs font-bold uppercase tracking-wider flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-2.5 transition-all cursor-pointer ${
                     activeTab === "recipes"
                       ? "bg-primary-teal text-white-card border-primary-teal"
                       : "bg-transparent text-primary-teal border-transparent hover:border-primary-teal/30 hover:bg-primary-teal/5"
                   }`}
                 >
-                  <BookOpen className="w-4 h-4" />
-                  <span>Recipes ({recipes.length})</span>
+                  <BookOpen className="w-4 h-4 shrink-0" />
+                  <span className="truncate">Recipes ({recipes.length})</span>
                 </button>
 
                 <button
                   onClick={() => { setActiveTab("articles"); setShowRecipeForm(false); setShowArticleForm(false); }}
-                  className={`w-full px-4 py-3.5 border-2 text-left text-xs font-bold uppercase tracking-wider flex items-center space-x-2.5 transition-all cursor-pointer ${
+                  className={`w-full px-2 md:px-4 py-2.5 md:py-3.5 border-2 text-center md:text-left text-[9px] md:text-xs font-bold uppercase tracking-wider flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-2.5 transition-all cursor-pointer ${
                     activeTab === "articles"
                       ? "bg-primary-teal text-white-card border-primary-teal"
                       : "bg-transparent text-primary-teal border-transparent hover:border-primary-teal/30 hover:bg-primary-teal/5"
                   }`}
                 >
-                  <FileText className="w-4 h-4" />
-                  <span>Blog Articles ({articles.length})</span>
+                  <FileText className="w-4 h-4 shrink-0" />
+                  <span className="truncate">Articles ({articles.length})</span>
                 </button>
 
                 <button
                   onClick={() => { setActiveTab("settings"); setShowRecipeForm(false); setShowArticleForm(false); }}
-                  className={`w-full px-4 py-3.5 border-2 text-left text-xs font-bold uppercase tracking-wider flex items-center space-x-2.5 transition-all cursor-pointer ${
+                  className={`w-full px-2 md:px-4 py-2.5 md:py-3.5 border-2 text-center md:text-left text-[9px] md:text-xs font-bold uppercase tracking-wider flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-2.5 transition-all cursor-pointer ${
                     activeTab === "settings"
                       ? "bg-primary-teal text-white-card border-primary-teal"
                       : "bg-transparent text-primary-teal border-transparent hover:border-primary-teal/30 hover:bg-primary-teal/5"
                   }`}
                 >
-                  <Key className="w-4 h-4" />
-                  <span>Auth Settings</span>
+                  <Key className="w-4 h-4 shrink-0" />
+                  <span className="truncate">Auth</span>
                 </button>
               </div>
 
-              <div className="p-4 border-t border-primary-teal/10">
+              <div className="p-2 md:p-4 border-l md:border-l-0 md:border-t border-primary-teal/10 shrink-0">
                 <button
                   onClick={() => { setIsAuthenticated(false); setUsername(""); setPassword(""); }}
-                  className="w-full py-2.5 bg-pink-red text-white-card border-2 border-pink-red hover:bg-pink-red/90 font-bold text-[10px] uppercase tracking-wider text-center flex items-center justify-center space-x-2 cursor-pointer transition-colors"
+                  className="px-3 md:w-full py-2.5 bg-pink-red text-white-card border-2 border-pink-red hover:bg-pink-red/90 font-bold text-[9px] md:text-[10px] uppercase tracking-wider text-center flex items-center justify-center space-x-1.5 md:space-x-2 cursor-pointer transition-colors"
                 >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span>Logout</span>
+                  <LogOut className="w-3.5 h-3.5 shrink-0" />
+                  <span className="hidden xs:inline md:inline">Logout</span>
                 </button>
               </div>
             </div>

@@ -437,7 +437,7 @@ export default function RecipeParadise({
       {/* 1. Recipe Detail Modal */}
       <AnimatePresence>
         {activeRecipe && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -450,30 +450,30 @@ export default function RecipeParadise({
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-3xl bg-cream-bg border-4 border-primary-teal max-h-[85vh] overflow-y-auto z-10 flex flex-col text-primary-teal"
+              className="relative w-full max-w-3xl bg-cream-bg border-4 border-primary-teal max-h-[92vh] sm:max-h-[85vh] overflow-y-auto z-10 flex flex-col text-primary-teal"
             >
               {/* Image banner */}
-              <div className="relative h-64 md:h-80 shrink-0 border-b-2 border-primary-teal">
+              <div className="relative h-48 sm:h-64 md:h-80 shrink-0 border-b-2 border-primary-teal">
                 <img
                   src={getImageUrl(activeRecipe.image)}
                   alt={activeRecipe.name}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-green/80 via-primary-teal/25 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark-green/90 via-primary-teal/20 to-transparent" />
                 
                 {/* Close Button */}
                 <button
                   onClick={() => setActiveRecipe(null)}
-                  className="absolute top-4 right-4 p-2 bg-cream-bg border-2 border-primary-teal hover:bg-gold-yellow hover:text-dark-green transition-colors cursor-pointer text-primary-teal"
+                  className="absolute top-4 right-4 p-2 bg-cream-bg border-2 border-primary-teal hover:bg-gold-yellow hover:text-dark-green transition-colors cursor-pointer text-primary-teal z-25"
                 >
                   <X className="w-5 h-5" />
                 </button>
 
-                <div className="absolute bottom-6 left-6 right-6 text-white-card space-y-1.5 font-display">
-                  <span className="font-mono text-[10px] font-bold uppercase bg-gold-yellow text-dark-green border border-primary-teal px-2.5 py-0.5 tracking-wider">
+                <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 text-white-card space-y-1.5 font-display pr-12">
+                  <span className="font-mono text-[9px] sm:text-[10px] font-bold uppercase bg-gold-yellow text-dark-green border border-primary-teal px-2 py-0.5 tracking-wider inline-block">
                     {activeRecipe.categoryLabel}
                   </span>
-                  <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight leading-tight">
                     {activeRecipe.name}
                   </h3>
                 </div>
@@ -646,7 +646,7 @@ export default function RecipeParadise({
       {/* 2. Article Reader Modal */}
       <AnimatePresence>
         {activeArticle && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -659,15 +659,15 @@ export default function RecipeParadise({
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl bg-cream-bg border-4 border-primary-teal max-h-[85vh] overflow-y-auto z-10 flex flex-col text-primary-teal"
+              className="relative w-full max-w-2xl bg-cream-bg border-4 border-primary-teal max-h-[92vh] sm:max-h-[85vh] overflow-y-auto z-10 flex flex-col text-primary-teal"
             >
               {/* Header block */}
-              <div className="p-6 md:p-8 border-b-2 border-primary-teal space-y-4">
+              <div className="p-5 md:p-8 pr-16 md:pr-16 border-b-2 border-primary-teal space-y-4">
                 <div className="flex items-center justify-between text-mono text-[9px] text-primary-teal/50 uppercase tracking-widest">
                   <span>Becca's Food Logs</span>
                   <span>{activeArticle.readTime}</span>
                 </div>
-                <h3 className="font-display text-2xl md:text-3xl font-black uppercase text-primary-teal tracking-tight leading-tight">
+                <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-black uppercase text-primary-teal tracking-tight leading-tight">
                   {activeArticle.title}
                 </h3>
                 
@@ -681,7 +681,7 @@ export default function RecipeParadise({
               </div>
 
               {/* Image banner */}
-              <div className="relative h-56 md:h-64 shrink-0 border-b-2 border-primary-teal">
+              <div className="relative h-40 sm:h-56 md:h-64 shrink-0 border-b-2 border-primary-teal">
                 <img
                   src={getImageUrl(activeArticle.image)}
                   alt={activeArticle.title}
@@ -689,8 +689,8 @@ export default function RecipeParadise({
                 />
               </div>
 
-              {/* Content body */}
-              <div className="p-6 md:p-8 space-y-6 overflow-y-auto">
+              {/* Content body - Removed inner overflow-y-auto to allow single unified scroll */}
+              <div className="p-5 md:p-8 space-y-6">
                 <p className="font-sans text-xs md:text-sm text-primary-teal font-medium leading-relaxed bg-primary-teal/10 p-4 border-l-4 border-primary-teal">
                   {activeArticle.excerpt}
                 </p>
