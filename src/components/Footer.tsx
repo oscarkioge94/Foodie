@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Send, Leaf, Heart, ArrowUpRight, CheckCircle } from "lucide-react";
+import { Send, Leaf, Heart, ArrowUpRight, CheckCircle, Instagram, Mail } from "lucide-react";
 
 interface FooterProps {
   onOpenAdmin?: () => void;
@@ -39,6 +39,35 @@ export default function Footer({ onOpenAdmin }: FooterProps) {
               <span>ESTD 2014</span>
               <span>•</span>
               <span>Nairobi, Kenya</span>
+            </div>
+
+            {/* Social Connect & Contact info */}
+            <div className="pt-4 border-t border-cream-bg/10 flex flex-col space-y-3">
+              <span className="font-mono text-[9px] font-bold text-cream-bg/40 uppercase tracking-[0.2em] block">
+                Connect with Becca
+              </span>
+              <div className="flex flex-col space-y-2">
+                <a
+                  href="https://www.instagram.com/becc.afoodies?utm_source=qr&igsh=ZnRjYXI3ZXhxNTFt"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2.5 text-xs font-mono text-cream-bg/85 hover:text-gold-yellow transition-all duration-200 group uppercase tracking-wider w-fit"
+                >
+                  <div className="p-1.5 rounded-none bg-white-card/5 border border-cream-bg/10 group-hover:border-gold-yellow/40 group-hover:bg-gold-yellow/10 transition-all flex items-center justify-center shrink-0">
+                    <Instagram className="w-3.5 h-3.5 text-gold-yellow" />
+                  </div>
+                  <span>Instagram</span>
+                </a>
+                <a
+                  href="mailto:muthonibecca@gmail.com"
+                  className="flex items-center space-x-2.5 text-xs font-mono text-cream-bg/85 hover:text-gold-yellow transition-all duration-200 group uppercase tracking-wider w-fit"
+                >
+                  <div className="p-1.5 rounded-none bg-white-card/5 border border-cream-bg/10 group-hover:border-gold-yellow/40 group-hover:bg-gold-yellow/10 transition-all flex items-center justify-center shrink-0">
+                    <Mail className="w-3.5 h-3.5 text-gold-yellow" />
+                  </div>
+                  <span>muthonibecca@gmail.com</span>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -123,6 +152,10 @@ export default function Footer({ onOpenAdmin }: FooterProps) {
               <Heart className="w-3.5 h-3.5 mr-1 text-pink-red fill-pink-red" />
               <span>Nourishing souls through traditional flavors</span>
             </span>
+            <a href="mailto:muthonibecca@gmail.com" className="hover:text-white-card transition-colors flex items-center text-gold-yellow">
+              <span>Contact: muthonibecca@gmail.com</span>
+              <ArrowUpRight className="w-3 h-3 ml-0.5" />
+            </a>
             <a href="#" className="hover:text-white-card transition-colors flex items-center">
               <span>Privacy Policy</span>
               <ArrowUpRight className="w-3 h-3 ml-0.5" />
