@@ -68,12 +68,13 @@ export async function seedInitialDataIfEmpty(initialRecipes: any[], initialArtic
       }
     }
 
-    // 3. Setup default admin config if not existing
+    // 3. Setup default admin config if not existing or still has the old default passphrase
     const adminConfigRef = doc(db, COLLECTIONS.ADMIN, "auth");
     const adminSnap = await getDoc(adminConfigRef);
-    if (!adminSnap.exists()) {
+    if (!adminSnap.exists() || adminSnap.data()?.passphrase === "becca-paradise") {
       await setDoc(adminConfigRef, {
-        passphrase: "becca-paradise" // Default passphrase, can be changed in UI
+        username: "admin",
+        passphrase: "Admin123!@#"
       });
     }
 

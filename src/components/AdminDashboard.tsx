@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { MenuItem, Article } from "../types";
 import { 
-  verifyPassphrase, 
+  verifyCredentials, 
   updatePassphrase, 
   saveRecipe, 
   removeRecipe, 
@@ -39,6 +39,7 @@ type TabType = "recipes" | "articles" | "settings";
 
 export default function AdminDashboard({ isOpen, onClose, recipes, articles }: AdminDashboardProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
   const [passphrase, setPassphrase] = useState("");
   const [showPassphrase, setShowPassphrase] = useState(false);
   const [authError, setAuthError] = useState("");
@@ -64,6 +65,7 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
   useEffect(() => {
     // Reset states on reopen
     if (isOpen) {
+      setUsername("");
       setPassphrase("");
       setAuthError("");
     }
@@ -72,11 +74,11 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError("");
-    const isCorrect = await verifyPassphrase(passphrase);
+    const isCorrect = await verifyCredentials(username, passphrase);
     if (isCorrect) {
       setIsAuthenticated(true);
     } else {
-      setAuthError("Incorrect admin passphrase. Please try again.");
+      setAuthError("Incorrect admin username or password. Please try again.");
     }
   };
 
@@ -331,21 +333,35 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
                   Verify Credentials
                 </h3>
                 <p className="font-sans text-xs text-gray-body/70 leading-relaxed">
-                  Enter the creator passphrase to unlock the live food blog and recipe manager database.
+                  Enter the creator username and password to unlock the live food blog and recipe manager database.
                 </p>
               </div>
 
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-1.5">
                   <label className="font-mono text-[9px] font-bold uppercase tracking-wider text-primary-teal">
-                    Secret Creator Passphrase
+                    Username
+                  </label>
+                  <input 
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="e.g. admin"
+                    className="w-full px-4 py-3 bg-cream-bg border-2 border-primary-teal font-sans text-xs text-primary-teal placeholder-primary-teal/40 focus:outline-none focus:border-gold-yellow"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="font-mono text-[9px] font-bold uppercase tracking-wider text-primary-teal">
+                    Password
                   </label>
                   <div className="relative">
                     <input 
                       type={showPassphrase ? "text" : "password"}
                       value={passphrase}
                       onChange={(e) => setPassphrase(e.target.value)}
-                      placeholder="e.g. becca-paradise"
+                      placeholder="e.g. Admin123!@#"
                       className="w-full px-4 py-3 bg-cream-bg border-2 border-primary-teal font-sans text-xs text-primary-teal placeholder-primary-teal/40 focus:outline-none focus:border-gold-yellow"
                       required
                     />
@@ -374,12 +390,19 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
               </form>
 
               <div className="bg-primary-teal/5 border border-primary-teal/10 p-4 text-center">
-                <span className="font-mono text-[9px] uppercase text-primary-teal/60 block">
-                  Default Dev Passphrase
+                <span className="font-mono text-[9px] uppercase text-primary-teal/60 block mb-1.5">
+                  Default Dev Credentials
                 </span>
-                <span className="font-mono text-xs font-black text-primary-teal">
-                  becca-paradise
-                </span>
+                <div className="font-mono text-xs flex flex-col gap-1 items-center justify-center">
+                  <div>
+                    <span className="text-primary-teal/60 text-[10px]">Username: </span>
+                    <span className="font-black text-primary-teal text-[11px]">admin</span>
+                  </div>
+                  <div>
+                    <span className="text-primary-teal/60 text-[10px]">Password: </span>
+                    <span className="font-black text-primary-teal text-[11px]">Admin123!@#</span>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -429,7 +452,7 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
 
               <div className="p-4 border-t border-primary-teal/10">
                 <button
-                  onClick={() => { setIsAuthenticated(false); setPassphrase(""); }}
+                  onClick={() => { setIsAuthenticated(false); setUsername(""); setPassphrase(""); }}
                   className="w-full py-2.5 bg-pink-red text-white-card border-2 border-pink-red hover:bg-pink-red/90 font-bold text-[10px] uppercase tracking-wider text-center flex items-center justify-center space-x-2 cursor-pointer transition-colors"
                 >
                   <LogOut className="w-3.5 h-3.5" />
