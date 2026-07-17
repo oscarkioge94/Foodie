@@ -694,7 +694,7 @@ export default function RecipeParadise({
                 <p className="font-sans text-xs md:text-sm text-primary-teal font-medium leading-relaxed bg-primary-teal/10 p-4 border-l-4 border-primary-teal">
                   {activeArticle.excerpt}
                 </p>
-                <div className="font-sans text-xs md:text-sm text-gray-body leading-relaxed font-light space-y-4 prose prose-sm max-w-none">
+                <div className="font-sans text-xs md:text-sm text-gray-body leading-relaxed font-light space-y-4 prose prose-sm max-w-none [&_h1]:font-black [&_h1]:text-lg sm:[&_h1]:text-2xl [&_h1]:text-primary-teal [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:block [&_h2]:font-black [&_h2]:text-base sm:[&_h2]:text-xl [&_h2]:text-primary-teal [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:block [&_h2]:font-display [&_h2]:tracking-tight [&_h3]:font-black [&_h3]:text-sm sm:[&_h3]:text-lg [&_h3]:text-primary-teal [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:block [&_h3]:font-display [&_h3]:tracking-tight [&_h4]:font-bold [&_h4]:text-xs sm:[&_h4]:text-sm [&_h4]:text-primary-teal [&_h4]:mt-4 [&_h4]:mb-1 [&_h4]:block [&_strong]:font-bold [&_strong]:text-primary-teal [&_p]:mb-4 [&_p]:leading-relaxed [&_hr]:border-primary-teal/20 [&_hr]:my-6 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ul]:mb-4 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1.5 [&_ol]:mb-4 [&_li]:text-gray-body [&_li]:leading-relaxed">
                   <div dangerouslySetInnerHTML={{ __html: activeArticle.content }} />
                 </div>
 
