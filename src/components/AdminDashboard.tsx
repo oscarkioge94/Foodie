@@ -14,19 +14,7 @@ import {
   removeArticle 
 } from "../utils/firebaseService";
 
-// Standard preset images available in the assets
-const IMAGE_PRESETS = [
-  { label: "Botanical Greens", url: "/images/becca_foodies_botanical_greens_1784115212572.jpg" },
-  { label: "Garden Sandwich", url: "/images/sandwich.png" },
-  { label: "Seasonal Berries", url: "/images/seasonal.jpeg" },
-  { label: "Coastal Sea Bass", url: "/images/becca_foodies_coastal_harvest_1784115225586.jpg" },
-  { label: "Healthy Smoothie", url: "/images/Smoothie.png" },
-  { label: "Kenyan Street Food", url: "/images/street.png" },
-  { label: "The Weight Loss Journey", url: "/images/The_journey.png" },
-  { label: "Balanced Dieting", url: "/images/Dieting.png" },
-  { label: "Healthy Life Celebration", url: "/images/ChatGPT_Image_Jul_1_2026_12_50_23_PM.png" },
-  { label: "Fresh Kenyan Staples", url: "/images/WhatsApp_Image_2026-07-02_at_12.34.26.jpeg" }
-];
+import ImageSourceSelector, { IMAGE_PRESETS } from "./ImageSourceSelector";
 
 interface AdminDashboardProps {
   isOpen: boolean;
@@ -389,21 +377,7 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
                 </button>
               </form>
 
-              <div className="bg-primary-teal/5 border border-primary-teal/10 p-4 text-center">
-                <span className="font-mono text-[9px] uppercase text-primary-teal/60 block mb-1.5">
-                  Default Dev Credentials
-                </span>
-                <div className="font-mono text-xs flex flex-col gap-1 items-center justify-center">
-                  <div>
-                    <span className="text-primary-teal/60 text-[10px]">Username: </span>
-                    <span className="font-black text-primary-teal text-[11px]">admin</span>
-                  </div>
-                  <div>
-                    <span className="text-primary-teal/60 text-[10px]">Password: </span>
-                    <span className="font-black text-primary-teal text-[11px]">Admin123!@#</span>
-                  </div>
-                </div>
-              </div>
+
             </motion.div>
           </div>
         ) : (
@@ -731,30 +705,12 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
                         </div>
                       </div>
 
-                      {/* Image Preset Selector */}
-                      <div className="space-y-1.5">
-                        <label className="font-mono text-[9px] font-bold uppercase tracking-wider block">
-                          Visual Image Asset
-                        </label>
-                        <select
-                          value={selectedPresetImage}
-                          onChange={(e) => setSelectedPresetImage(e.target.value)}
-                          className="w-full px-3 py-2 bg-cream-bg border border-primary-teal font-sans text-xs text-primary-teal focus:outline-none"
-                        >
-                          {IMAGE_PRESETS.map((preset, idx) => (
-                            <option key={idx} value={preset.url}>
-                              Preset: {preset.label}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="aspect-video w-full border border-primary-teal overflow-hidden bg-cream-bg">
-                          <img 
-                            src={selectedPresetImage} 
-                            alt="Selected preset"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </div>
+                      {/* Image Source Selector */}
+                      <ImageSourceSelector
+                        value={selectedPresetImage}
+                        onChange={setSelectedPresetImage}
+                        label="Visual Image Asset"
+                      />
 
                       {/* Checkboxes */}
                       <div className="flex items-center space-x-2.5 pt-2">
@@ -961,30 +917,12 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
                         </div>
                       </div>
 
-                      {/* Image Preset selector */}
-                      <div className="space-y-1.5">
-                        <label className="font-mono text-[9px] font-bold uppercase tracking-wider block">
-                          Featured Thumbnail Image
-                        </label>
-                        <select
-                          value={selectedPresetImage}
-                          onChange={(e) => setSelectedPresetImage(e.target.value)}
-                          className="w-full px-3 py-2 bg-cream-bg border border-primary-teal font-sans text-xs text-primary-teal focus:outline-none"
-                        >
-                          {IMAGE_PRESETS.map((preset, idx) => (
-                            <option key={idx} value={preset.url}>
-                              Preset: {preset.label}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="aspect-video w-full border border-primary-teal overflow-hidden bg-cream-bg">
-                          <img 
-                            src={selectedPresetImage} 
-                            alt="Selected preset"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </div>
+                      {/* Image Source Selector */}
+                      <ImageSourceSelector
+                        value={selectedPresetImage}
+                        onChange={setSelectedPresetImage}
+                        label="Featured Thumbnail Image"
+                      />
 
                     </div>
                   </div>
