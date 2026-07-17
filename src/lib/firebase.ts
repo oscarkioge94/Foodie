@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { 
-  getFirestore, 
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
   collection, 
   getDocs, 
   addDoc, 
@@ -25,8 +27,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore with the custom databaseId from config
-export const db = getFirestore(app, "ai-studio-beccafoodies-a1b79dcf-c016-4073-8938-0c07022275dc");
+// Initialize Firestore with robust local caching to handle network dropouts smoothly
+export const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager()
+  })
+}, "ai-studio-beccafoodies-a1b79dcf-c016-4073-8938-0c07022275dc");
 
 export const auth = getAuth(app);
 
@@ -79,6 +85,6 @@ export async function seedInitialDataIfEmpty(initialRecipes: any[], initialArtic
     }
 
   } catch (error) {
-    console.error("Error seeding initial data:", error);
+    console.warn("Seeding initial data skipped/deferred (client is offline):", error);
   }
 }

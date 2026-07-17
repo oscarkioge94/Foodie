@@ -8,6 +8,8 @@ import { MenuItem, Article } from "../types";
 import { 
   verifyCredentials, 
   updatePassphrase, 
+  updateAdminCredentials,
+  getAdminCredentials,
   saveRecipe, 
   removeRecipe, 
   saveArticle, 
@@ -28,8 +30,8 @@ type TabType = "recipes" | "articles" | "settings";
 export default function AdminDashboard({ isOpen, onClose, recipes, articles }: AdminDashboardProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState("");
-  const [passphrase, setPassphrase] = useState("");
-  const [showPassphrase, setShowPassphrase] = useState(false);
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<TabType>("recipes");
   
@@ -43,7 +45,8 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
   const [showRecipeForm, setShowRecipeForm] = useState(false);
   const [showArticleForm, setShowArticleForm] = useState(false);
 
-  // Settings passphrase states
+  // Settings credential states
+  const [newAdminUsername, setNewAdminUsername] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
 
@@ -51,18 +54,24 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
   const [selectedPresetImage, setSelectedPresetImage] = useState("");
 
   useEffect(() => {
-    // Reset states on reopen
+    // Reset login states on reopen and fetch current admin username
     if (isOpen) {
       setUsername("");
-      setPassphrase("");
+      setPassword("");
       setAuthError("");
+      
+      getAdminCredentials().then(creds => {
+        setNewAdminUsername(creds.username);
+      }).catch(err => {
+        console.warn("Failed to fetch admin username, defaulting to empty:", err);
+      });
     }
   }, [isOpen]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError("");
-    const isCorrect = await verifyCredentials(username, passphrase);
+    const isCorrect = await verifyCredentials(username, password);
     if (isCorrect) {
       setIsAuthenticated(true);
     } else {
@@ -217,26 +226,30 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
     }
   };
 
-  // --- PASSPHRASE SETTINGS ---
-  const handleUpdatePassphrase = async (e: React.FormEvent) => {
+  // --- CREDENTIAL SETTINGS ---
+  const handleUpdateCredentials = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!newAdminUsername || newAdminUsername.trim().length < 3) {
+      showStatus("Username must be at least 3 characters long", "error");
+      return;
+    }
     if (!newPass || newPass.trim().length < 4) {
-      showStatus("Passphrase must be at least 4 characters long", "error");
+      showStatus("Password must be at least 4 characters long", "error");
       return;
     }
     if (newPass !== confirmPass) {
-      showStatus("Passphrase confirmation does not match", "error");
+      showStatus("Password confirmation does not match", "error");
       return;
     }
 
     try {
-      const success = await updatePassphrase(newPass);
+      const success = await updateAdminCredentials(newAdminUsername.trim(), newPass);
       if (success) {
-        showStatus("Admin passphrase updated successfully!");
+        showStatus("Admin login credentials updated successfully!");
         setNewPass("");
         setConfirmPass("");
       } else {
-        showStatus("Failed to update passphrase", "error");
+        showStatus("Failed to update credentials", "error");
       }
     } catch (err) {
       showStatus("An error occurred during save", "error");
@@ -346,19 +359,19 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
                   </label>
                   <div className="relative">
                     <input 
-                      type={showPassphrase ? "text" : "password"}
-                      value={passphrase}
-                      onChange={(e) => setPassphrase(e.target.value)}
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       placeholder="e.g. Admin123!@#"
                       className="w-full px-4 py-3 bg-cream-bg border-2 border-primary-teal font-sans text-xs text-primary-teal placeholder-primary-teal/40 focus:outline-none focus:border-gold-yellow"
                       required
                     />
                     <button
                       type="button"
-                      onClick={() => setShowPassphrase(!showPassphrase)}
+                      onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-primary-teal/60 hover:text-primary-teal cursor-pointer"
                     >
-                      {showPassphrase ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
                 </div>
@@ -426,7 +439,7 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
 
               <div className="p-4 border-t border-primary-teal/10">
                 <button
-                  onClick={() => { setIsAuthenticated(false); setUsername(""); setPassphrase(""); }}
+                  onClick={() => { setIsAuthenticated(false); setUsername(""); setPassword(""); }}
                   className="w-full py-2.5 bg-pink-red text-white-card border-2 border-pink-red hover:bg-pink-red/90 font-bold text-[10px] uppercase tracking-wider text-center flex items-center justify-center space-x-2 cursor-pointer transition-colors"
                 >
                   <LogOut className="w-3.5 h-3.5" />
@@ -952,18 +965,32 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
                 <div className="p-6 md:p-8 max-w-xl space-y-6">
                   <div>
                     <h3 className="font-display text-2xl font-black uppercase tracking-tight">
-                      Security & Passphrase Settings
+                      Security & Auth Settings
                     </h3>
                     <p className="font-sans text-xs text-gray-body/70">
-                      Update the secret phrase used to log in to this Food Creator Admin Panel.
+                      Update the administrator username and password used to log in to this Creator Console.
                     </p>
                   </div>
 
-                  <form onSubmit={handleUpdatePassphrase} className="bg-cream-bg border-2 border-primary-teal p-6 space-y-4">
+                  <form onSubmit={handleUpdateCredentials} className="bg-cream-bg border-2 border-primary-teal p-6 space-y-4">
                     
                     <div className="space-y-1.5">
                       <label className="font-mono text-[9px] font-bold uppercase tracking-wider text-primary-teal">
-                        New Passphrase
+                        New Username
+                      </label>
+                      <input 
+                        type="text"
+                        value={newAdminUsername}
+                        onChange={(e) => setNewAdminUsername(e.target.value)}
+                        placeholder="admin"
+                        className="w-full px-3.5 py-2.5 bg-white-card border border-primary-teal font-sans text-xs text-primary-teal focus:outline-none focus:border-gold-yellow"
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="font-mono text-[9px] font-bold uppercase tracking-wider text-primary-teal">
+                        New Password
                       </label>
                       <input 
                         type="password"
@@ -977,7 +1004,7 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
 
                     <div className="space-y-1.5">
                       <label className="font-mono text-[9px] font-bold uppercase tracking-wider text-primary-teal">
-                        Confirm New Passphrase
+                        Confirm New Password
                       </label>
                       <input 
                         type="password"
@@ -993,7 +1020,7 @@ export default function AdminDashboard({ isOpen, onClose, recipes, articles }: A
                       type="submit"
                       className="w-full py-3 bg-gold-yellow hover:bg-gold-yellow/90 text-dark-green font-mono text-xs font-bold uppercase tracking-wider border-2 border-gold-yellow cursor-pointer transition-colors"
                     >
-                      Update Passphrase
+                      Update Credentials
                     </button>
                   </form>
                 </div>

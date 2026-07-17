@@ -61,11 +61,17 @@ export default function Philosophy() {
           {pillars.map((pillar, i) => (
             <motion.div
               key={pillar.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 35 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: i * 0.15 }}
-              className="bg-white-card border-2 border-primary-teal rounded-none p-8 relative group hover:bg-primary-teal transition-all duration-300"
+              viewport={{ once: true, margin: "-80px" }}
+              whileHover={{ y: -8, scale: 1.015, borderColor: "#EAB308" }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 150, 
+                damping: 20,
+                delay: i * 0.12
+              }}
+              className="bg-white-card border-2 border-primary-teal rounded-none p-8 relative group hover:bg-primary-teal transition-all duration-300 shadow-sm hover:shadow-xl cursor-pointer"
               id={`philosophy-card-${pillar.num}`}
             >
               <div className="flex justify-between items-start mb-6">
@@ -94,10 +100,22 @@ export default function Philosophy() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mt-16 bg-dark-green text-white-card rounded-none p-8 sm:p-12 relative overflow-hidden border-2 border-dark-green"
+          className="mt-16 bg-dark-green text-white-card rounded-none p-8 sm:p-12 relative overflow-hidden border-2 border-dark-green shadow-lg"
           id="philosophy-quote-banner"
         >
-          <div className="absolute -right-12 -bottom-12 w-64 h-64 rounded-full bg-gold-yellow/10 blur-3xl" />
+          {/* Animated Gold Aura Sphere */}
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.6, 0.8, 0.6]
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="absolute -right-12 -bottom-12 w-64 h-64 rounded-full bg-gold-yellow/15 blur-3xl"
+          />
           <div className="relative z-10 max-w-3xl space-y-4">
             <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-gold-yellow font-bold">
               Becca Vance's Vision
@@ -106,7 +124,7 @@ export default function Philosophy() {
               "Healthy eating is not a temporary restriction — it’s a lifelong journey of nourishing yourself with balance, cultural pride, and wholesome joy."
             </p>
             <div className="flex items-center space-x-3 pt-4">
-              <div className="w-10 h-10 rounded-full bg-white-card/10 flex items-center justify-center font-serif text-sm italic text-gold-yellow">
+              <div className="w-10 h-10 rounded-full bg-white-card/10 flex items-center justify-center font-serif text-sm italic text-gold-yellow border border-white-card/10">
                 B
               </div>
               <div>

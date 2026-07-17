@@ -207,20 +207,30 @@ export default function RecipeParadise({
             Click a tag to instantly filter traditional stews, breakfast treats, or healthy weight-loss options
           </p>
 
-          <div className="flex flex-wrap justify-center gap-2 pt-6 max-w-4xl mx-auto">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-5 py-3 border-2 font-mono text-[10px] font-bold uppercase tracking-widest cursor-pointer transition-all ${
-                  selectedCategory === cat.id
-                    ? "bg-bright-lime text-dark-green border-bright-lime shadow-sm"
-                    : "bg-white-card text-primary-teal border-primary-teal/20 hover:border-bright-lime hover:text-bright-lime hover:bg-bright-lime/5"
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
+          <div className="flex flex-wrap justify-center gap-2 pt-6 max-w-4xl mx-auto relative">
+            {categories.map((cat) => {
+              const isSelected = selectedCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`relative px-5 py-3 border-2 font-mono text-[10px] font-bold uppercase tracking-widest cursor-pointer transition-all duration-300 z-10 ${
+                    isSelected
+                      ? "text-dark-green border-bright-lime shadow-sm"
+                      : "bg-white-card text-primary-teal border-primary-teal/20 hover:border-bright-lime hover:text-bright-lime"
+                  }`}
+                >
+                  {isSelected && (
+                    <motion.div
+                      layoutId="activeCategoryBackground"
+                      className="absolute inset-0 bg-bright-lime -z-10"
+                      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                    />
+                  )}
+                  {cat.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -243,11 +253,17 @@ export default function RecipeParadise({
                   <motion.div
                     key={item.id}
                     layout
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.4, delay: index * 0.05 }}
-                    className="bg-white-card border-2 border-primary-teal flex flex-col h-full overflow-hidden group hover:shadow-lg transition-all"
+                    whileHover={{ y: -8, borderColor: "#EAB308" }}
+                    transition={{ 
+                      type: "spring",
+                      stiffness: 150,
+                      damping: 18,
+                      layout: { duration: 0.35 }
+                    }}
+                    className="bg-white-card border-2 border-primary-teal flex flex-col h-full overflow-hidden group hover:shadow-xl transition-all duration-300 cursor-pointer"
                   >
                     {/* Image */}
                     <div className="relative h-56 overflow-hidden border-b border-primary-teal">
@@ -305,15 +321,19 @@ export default function RecipeParadise({
 
                       {/* Interactive Buttons */}
                       <div className="pt-6 mt-6 border-t border-primary-teal/10 flex items-center justify-between">
-                        <button
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={() => setActiveRecipe(item)}
                           className="flex items-center space-x-1 font-mono text-[10px] font-bold tracking-wider text-primary-teal hover:text-gold-yellow uppercase cursor-pointer transition-colors"
                         >
                           <BookOpen className="w-4 h-4" />
                           <span>View Recipe →</span>
-                        </button>
+                        </motion.button>
 
-                        <button
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={() => onToggleSaveRecipe(item)}
                           className={`px-4 py-2 border-2 border-primary-teal font-mono text-[9px] font-bold uppercase tracking-wider cursor-pointer transition-colors flex items-center space-x-1 ${
                             isSaved
@@ -323,7 +343,7 @@ export default function RecipeParadise({
                         >
                           <Heart className={`w-3 h-3 ${isSaved ? "fill-current text-white-card" : "text-white-card"}`} />
                           <span>{isSaved ? "Saved" : "Save"}</span>
-                        </button>
+                        </motion.button>
                       </div>
                     </div>
                   </motion.div>
@@ -354,10 +374,20 @@ export default function RecipeParadise({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {(articles.length > 0 ? articles : ARTICLES).map((article) => (
-              <div
+            {(articles.length > 0 ? articles : ARTICLES).map((article, index) => (
+              <motion.div
                 key={article.id}
-                className="bg-white-card border-2 border-primary-teal flex flex-col h-full overflow-hidden group hover:shadow-lg transition-all"
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ y: -8, borderColor: "#EAB308" }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 140,
+                  damping: 18,
+                  delay: index * 0.08
+                }}
+                className="bg-white-card border-2 border-primary-teal flex flex-col h-full overflow-hidden group hover:shadow-xl transition-all duration-300"
               >
                 {/* Image */}
                 <div className="relative h-48 overflow-hidden border-b border-primary-teal">
@@ -386,15 +416,17 @@ export default function RecipeParadise({
                   </div>
 
                   <div className="pt-6 mt-6 border-t border-primary-teal/10">
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => setActiveArticle(article)}
-                      className="px-5 py-2.5 w-full bg-primary-teal/5 hover:bg-primary-teal hover:text-white-card border-2 border-primary-teal font-mono text-[10px] font-bold uppercase tracking-widest text-primary-teal text-center cursor-pointer transition-colors"
+                      className="px-5 py-2.5 w-full bg-primary-teal/5 hover:bg-primary-teal hover:text-white-card border-2 border-primary-teal font-mono text-[10px] font-bold uppercase tracking-widest text-primary-teal text-center cursor-pointer transition-all duration-300"
                     >
                       Read More
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

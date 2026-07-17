@@ -39,9 +39,12 @@ export function subscribeToRecipes(callback: (recipes: MenuItem[]) => void) {
           }, { merge: true });
         }
       } catch (err) {
-        console.error("Error setting admin credentials on startup:", err);
+        console.warn("Could not check/set admin credentials on startup (offline mode active):", err);
       }
     }
+  }).catch((err) => {
+    console.warn("Firestore collection fetch deferred or offline. Using cached/local data:", err);
+    callback(MENU_ITEMS);
   });
 
   return onSnapshot(q, (snapshot) => {
@@ -49,7 +52,14 @@ export function subscribeToRecipes(callback: (recipes: MenuItem[]) => void) {
     snapshot.forEach((doc) => {
       recipes.push({ id: doc.id, ...doc.data() } as MenuItem);
     });
-    callback(recipes);
+    if (recipes.length > 0) {
+      callback(recipes);
+    } else {
+      callback(MENU_ITEMS);
+    }
+  }, (err) => {
+    console.warn("onSnapshot recipes failed or offline, falling back to local:", err);
+    callback(MENU_ITEMS);
   });
 }
 
@@ -64,7 +74,14 @@ export function subscribeToArticles(callback: (articles: Article[]) => void) {
     snapshot.forEach((doc) => {
       articles.push({ id: doc.id, ...doc.data() } as Article);
     });
-    callback(articles);
+    if (articles.length > 0) {
+      callback(articles);
+    } else {
+      callback(ARTICLES);
+    }
+  }, (err) => {
+    console.warn("onSnapshot articles failed or offline, falling back to local:", err);
+    callback(ARTICLES);
   });
 }
 
@@ -97,6 +114,38 @@ export async function verifyCredentials(username: string, passport: string): Pro
     console.error("Error verifying credentials:", error);
     // Bulletproof fallback so network/permission issues don't lock you out
     return username === "admin" && passport === "Admin123!@#";
+  }
+}
+
+/**
+ * Get current admin credentials
+ */
+export async function getAdminCredentials(): Promise<{ username: string }> {
+  try {
+    const adminRef = doc(db, COLLECTIONS.ADMIN, "auth");
+    const snap = await getDoc(adminRef);
+    if (snap.exists()) {
+      const data = snap.data();
+      return { username: data.username || "admin" };
+    }
+    return { username: "admin" };
+  } catch (error) {
+    console.error("Error getting admin credentials:", error);
+    return { username: "admin" };
+  }
+}
+
+/**
+ * Update administrator credentials (both username and password)
+ */
+export async function updateAdminCredentials(newUsername: string, newPassword: string): Promise<boolean> {
+  try {
+    const adminRef = doc(db, COLLECTIONS.ADMIN, "auth");
+    await setDoc(adminRef, { username: newUsername, passphrase: newPassword }, { merge: true });
+    return true;
+  } catch (error) {
+    console.error("Error updating admin credentials:", error);
+    return false;
   }
 }
 
